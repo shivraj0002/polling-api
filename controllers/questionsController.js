@@ -1,7 +1,21 @@
 const Question = require('./../models/questionModel')
+const Option = require('./../models/optionModel')
+exports.getQuestion = async (req, res) => {
+    try {
+        const question = await Question.findById(req.params.id).populate({
+            path: 'options',
+            model: 'Option'
+        });
 
-exports.getQuestion = (req, res) => {
-    res.send("From controller")
+        if (!question) {
+            return res.status(404).json({ error: 'Question not found' });
+        }
+
+        res.json(question);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };
 
 exports.createQuestion = async (req, res) => {
@@ -11,11 +25,39 @@ exports.createQuestion = async (req, res) => {
         const question = await Question.create({
             title: title
         });
-        // await question.save();
+
         res.json(question);
-        // res.json({ title });
+
     } catch (err) {
         console.error("Cannot Create same question twice!📄");
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+exports.createOptions = async (req, res) => {
+    try {
+        const question = await Question.findById(req.params.id);
+        if (!question) {
+            return res.status(404).json({ error: 'Question not found' });
+        }
+
+        const options = req.body.options;
+        const createdOptions = [];
+
+        for (const optionText of options) {
+            const option = await Option.create({
+                text: optionText,
+                question: question._id
+            });
+
+            createdOptions.push(option);
+            question.options.push(option._id);
+        }
+
+        await question.save();
+        res.json(createdOptions);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}

@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
+// const dotenv = require('dotenv');
+const DB = process.env.DATABASE.replace(
+    '<PASSWORD>',
+    process.env.DATABASE_PASSWORD
+);
+console.log(DB);
 
 mongoose
     .connect(
-        "mongodb+srv://shivraj:EWpNyGOfQlDHvieQ@cluster0.eeayc1m.mongodb.net/natours?retryWrites=true&w=majority",
+        DB,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
