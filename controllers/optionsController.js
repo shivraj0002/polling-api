@@ -6,16 +6,28 @@ exports.addVote = async (req, res) => {
     try {
         const option = await Option.findById(req.params.id);
         if (!option) {
-            return res.status(404).json({ error: 'Option not found' });
+            return res.status(404).json({
+                success: 'failed',
+                message: "Option Not Found",
+            });
         }
 
         option.votes++;
         await option.save();
 
-        res.json(option);
+        res.json({
+            success: 'success',
+            message: "Option Updated successfully",
+            data: {
+                option: option
+            }
+        });
     } catch (err) {
 
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({
+            success: 'failed',
+            message: "Internal Server Error",
+        });
     }
 }
 
@@ -24,24 +36,30 @@ exports.deleteOption = async (req, res) => {
     try {
         const option = await Option.findById(req.params.id);
         if (!option) {
-            return res.status(404).json({ error: 'Option not found' });
+            return res.status(404).json({
+                success: 'failed',
+                message: "Option Not Found",
+            });
         }
 
         if (option.votes > 0) {
-            return res.status(400).json({ error: 'Option cannot be deleted as it has votes' });
+            return res.status(400).json({
+                success: 'failed',
+                message: "Option cannot be deleted as it has votes",
+            });
         }
 
-        const question = await Question.findByIdAndUpdate(option.question, { $pull: { options: option._id } });
-        if (!question) {
-            return res.status(404).json({ error: 'Question not found' });
-        }
+        await Question.findByIdAndUpdate(option.question, { $pull: { options: option._id } });
 
         await Option.findByIdAndDelete(req.params.id)
 
         res.sendStatus(204);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({
+            success: 'failed',
+            message: "Internal Server Error!",
+        });
     }
 }
 

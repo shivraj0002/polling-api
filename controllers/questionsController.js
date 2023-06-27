@@ -10,13 +10,25 @@ exports.getQuestion = async (req, res) => {
         });
 
         if (!question) {
-            return res.status(404).json({ error: 'Question not found' });
+            return res.status(404).json({
+                success: 'failed',
+                message: "Question Not Found",
+            });
         }
 
-        res.json(question);
+        res.json({
+            success: 'success',
+            message: "Question fetched successfully",
+            data: {
+                question: question
+            }
+        });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({
+            success: 'failed',
+            message: "Internal Server Error",
+        });
     }
 };
 
@@ -28,10 +40,20 @@ exports.getQuestions = async (req, res) => {
             model: 'Option'
         });
 
-        res.json(questions);
+        res.json({
+            success: 'success',
+            message: "Questions fetched successfully!",
+            results: questions.length,
+            data: {
+                questions: questions
+            }
+        });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({
+            success: 'error',
+            message: "Internal Server Error",
+        });
     }
 }
 
@@ -44,11 +66,19 @@ exports.createQuestion = async (req, res) => {
             title: title
         });
 
-        res.json(question);
+        res.status(201).json({
+            success: 'success',
+            message: "Question created successfully",
+            data: {
+                question: question
+            }
+        });
 
     } catch (err) {
-        console.error('Cannot Create same question twice!📄');
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(400).json({
+            success: 'failed',
+            message: "Cannot Create same question twice",
+        });
     }
 };
 
@@ -57,13 +87,19 @@ exports.deleteQuestion = async (req, res) => {
     try {
         const question = await Question.findById(req.params.id);
         if (!question) {
-            return res.status(404).json({ error: 'Question not found' });
+            return res.status(404).json({
+                success: 'failed',
+                message: "Question Not Found",
+            });
         }
 
         const optionsWithVotes = await Option.countDocuments({ _id: { $in: question.options }, votes: { $gt: 0 } });
 
         if (optionsWithVotes > 0) {
-            return res.status(400).json({ error: 'Question cannot be deleted as one or more options have votes' });
+            return res.status(400).json({
+                success: 'failed',
+                message: "Question cannot be deleted as one or more options have votes",
+            });
         }
 
         await Question.findByIdAndDelete(req.params.id)
@@ -76,7 +112,10 @@ exports.deleteQuestion = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({
+            success: 'error',
+            message: "Internal Sever error",
+        });
     }
 }
 
@@ -85,7 +124,10 @@ exports.createOptions = async (req, res) => {
     try {
         const question = await Question.findById(req.params.id);
         if (!question) {
-            return res.status(404).json({ error: 'Question not found' });
+            return res.status(404).json({
+                success: 'failed',
+                message: "Question Not Found",
+            });
         }
 
         const options = req.body.options;
@@ -102,10 +144,19 @@ exports.createOptions = async (req, res) => {
         }
 
         await question.save();
-        res.json(createdOptions);
+        res.status(201).json({
+            success: 'success',
+            message: "Options created successfully",
+            data: {
+                createdOptions: createdOptions
+            }
+        });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({
+            success: 'error',
+            message: "Internal Server Error",
+        });
     }
 }
 
