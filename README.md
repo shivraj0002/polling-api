@@ -1,10 +1,12 @@
 
 # POLLING API📄
 
-`This is simple project created using JAVASCRIPT (Nodejs, Express, Mongoose, Ejs ...). It allows you to Upload any CSV file on site and review it.`
+`This is simple project created using JAVASCRIPT (Nodejs, Express, Mongoose, Ejs ...). It allows you to create question and upload it and add votes to it and delte it.`
 
-
-
+## Set Up
+**npm install:**
+**npm run dev: `Development`**
+**npm run start: `Production`**
 
 ## Tech Stack
 
