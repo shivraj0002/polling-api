@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+// creating the option schema 
 const optionSchema = new mongoose.Schema({
     text: {
         type: String,
@@ -15,6 +16,8 @@ const optionSchema = new mongoose.Schema({
         ref: 'Question'
     }
 });
+
+// create Option model
 const Option = mongoose.model('Option', optionSchema);
 
 module.exports = Option

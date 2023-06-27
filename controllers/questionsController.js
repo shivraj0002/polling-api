@@ -1,6 +1,7 @@
 const Question = require('./../models/questionModel')
 const Option = require('./../models/optionModel')
 
+// Controller for get one question with its options
 exports.getQuestion = async (req, res) => {
     try {
         const question = await Question.findById(req.params.id).populate({
@@ -19,6 +20,7 @@ exports.getQuestion = async (req, res) => {
     }
 };
 
+// Controller to get all questions with its options
 exports.getQuestions = async (req, res) => {
     try {
         const questions = await Question.find().populate({
@@ -33,6 +35,7 @@ exports.getQuestions = async (req, res) => {
     }
 }
 
+// Controller to create question
 exports.createQuestion = async (req, res) => {
     try {
         const title = req.body.title;
@@ -49,6 +52,7 @@ exports.createQuestion = async (req, res) => {
     }
 };
 
+// controller to delete a question
 exports.deleteQuestion = async (req, res) => {
     try {
         const question = await Question.findById(req.params.id);
@@ -76,6 +80,7 @@ exports.deleteQuestion = async (req, res) => {
     }
 }
 
+// controller to create multiple options
 exports.createOptions = async (req, res) => {
     try {
         const question = await Question.findById(req.params.id);
@@ -103,3 +108,5 @@ exports.createOptions = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+// using exports to use all functions as object values of this file 

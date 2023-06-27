@@ -1,6 +1,7 @@
 const Option = require('./../models/optionModel')
 const Question = require('./../models/questionModel')
 
+// Controller to add Vote 
 exports.addVote = async (req, res) => {
     try {
         const option = await Option.findById(req.params.id);
@@ -18,6 +19,7 @@ exports.addVote = async (req, res) => {
     }
 }
 
+// Contrller to delete option if there is zoro votes on it
 exports.deleteOption = async (req, res) => {
     try {
         const option = await Option.findById(req.params.id);
@@ -42,3 +44,5 @@ exports.deleteOption = async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+// using exports to use all functions as object values of this file 
