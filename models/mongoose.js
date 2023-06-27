@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-// const dotenv = require('dotenv');
+
 const DB = process.env.DATABASE.replace(
     '<PASSWORD>',
     process.env.DATABASE_PASSWORD
@@ -14,6 +14,6 @@ mongoose
         }
     )
     .then(() => console.log("DB connection successful!: ✅"))
-    .catch((e) => console.log("DB connection failed!: ❌", e));
+    .catch((e) => console.log("DB connection failed!: ❌"));
 
 module.exports = mongoose;

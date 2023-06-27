@@ -64,6 +64,10 @@ exports.deleteQuestion = async (req, res) => {
 
         await Question.findByIdAndDelete(req.params.id)
 
+        for (const option of question.options) {
+            await Option.findByIdAndDelete(option._id);
+        }
+
         res.sendStatus(204);
 
     } catch (err) {
