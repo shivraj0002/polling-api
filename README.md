@@ -5,7 +5,9 @@
 
 ## Set Up
 **npm install:**
+
 **npm run dev: `Development`**
+
 **npm run start: `Production`**
 
 ## Tech Stack
