@@ -27,6 +27,7 @@ app.all('*', (req, res, next) => {
         {
             success: 'failed',
             message: "route not found",
+            rootUrl: 'https://polling-api-mbup.onrender.com',
             guide: apiEndPoint
         })
 
